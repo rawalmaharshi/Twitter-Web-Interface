@@ -9,48 +9,79 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("register", payload, socket) do          
       username = Map.get(payload, "name")
       password = Map.get(payload, "password")
-      IO.inspect GenServer.call(:twitter_engine, {:user_register, username, password})      
+      case GenServer.call(Proj4.TwitterServer, {:register, username, password, "userpid"}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end      
       {:noreply, socket}
     end
 
     def handle_in("login", payload, socket) do
       username = Map.get(payload, "name")
       password = Map.get(payload, "password")
-      IO.inspect  GenServer.call(:twitter_engine, {:user_login, username, password, socket})
+      case GenServer.call(Proj4.TwitterServer, {:login, username, password,"client_pid"}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end      
       {:noreply, socket}
     end
     
     def handle_in("logout", payload, socket) do
       username = Map.get(payload, "name")      
-      IO.inspect  GenServer.call(:twitter_engine, {:user_logout, username, socket})
+      case GenServer.call(Proj4.TwitterServer, {:logout, username,"client_pid"}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end
       {:noreply, socket}
     end
 
     def handle_in("follow", payload, socket) do
-      followed_username = Map.get(payload, "following")
-      follower_username = Map.get(payload, "follower")      
-      IO.inspect  GenServer.call(:twitter_engine, {:follow, followed_username, follower_username})
+      subscriber = Map.get(payload, "following")
+      subscribed_to = Map.get(payload, "follower")      
+      case GenServer.call(Proj4.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end
       {:noreply, socket}
     end
 
     def handle_in("send_tweet", payload, socket) do
       username = Map.get(payload, "name")
       tweet = Map.get(payload, "tweet")      
-      IO.inspect  GenServer.cast(:twitter_engine, {:send_tweet, username, tweet})
+      case GenServer.cast(Proj4.TwitterServer, {:send_tweet, username, tweet}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end
       {:noreply, socket}
     end       
 
+    #not sure about this
     def handle_in("send_retweet", payload, socket) do
       username1 = Map.get(payload, "username1")
       username2 = Map.get(payload, "username2")
       tweet = Map.get(payload, "tweet")            
-      IO.inspect  GenServer.cast(:twitter_engine, {:retweet, username1, username2, tweet})
+      case GenServer.cast(Proj4.TwitterServer, {:retweet, username1, username2, tweet}) do
+        {:ok, msg} ->
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          {:reply, {:ok, msg}, socket}
+      end
       {:noreply, socket}
     end    
 
     def handle_in("search_hashtag", payload, socket) do      
       hashtag = Map.get(payload, "hashtag")      
-      response =  GenServer.call(:twitter_engine, {:search_hashtag, hashtag})
+      response =  GenServer.call(Proj4.TwitterServer, {:search_hashtag, hashtag})
       msg = "Search result for hashtag #{hashtag} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
@@ -58,7 +89,7 @@ defmodule TwitterPhxWeb.ChannelFile do
 
     def handle_in("search_username", payload, socket) do
       username = Map.get(payload, "username")      
-      response =  GenServer.call(:twitter_engine, {:search_user, username})
+      response =  GenServer.call(Proj4.TwitterServer, {:search_user, username})
       msg = "Search result for username #{username} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
