@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>TWITTER!</title>
-    <link rel="stylesheet" href= "<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> Twitter · Elixir · Phoenix </title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <div style="background-image: url(/twitter.jpg) ">
-        </div>
-      </header>
-
+    <header>
+      <section class="container">
+        <a href="/" class="phx-logo">
+          <img src="<%= Routes.static_path(@conn, "/images/twitterEngine.png") %>" alt="Twitter Engine Logo"/>
+        </a>
+      </section>
+    </header>
+    <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
