@@ -1,5 +1,6 @@
 defmodule TwitterPhxWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :twitterPhx
+  alias Proj4.TwitterServer
 
   socket "/socket", TwitterPhxWeb.UserSocket,
     websocket: true,
