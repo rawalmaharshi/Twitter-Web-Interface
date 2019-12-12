@@ -6,14 +6,14 @@
 <h2 align='center' color='blue'> TWITTER </h2>
 </div>
   <div class='col-md-3'>
-    <input type='text' id='name' class='form-control' placeholder='Username' />
+    <input type='text' id='userName' class='form-control' placeholder='Username' />
   </div>
   <div class='col-md-9'>
     <input type='password' id='password' class='form-control' placeholder='Password' />
   </div>
   <div margin='3' align='center'>
-  <input id='login' type='button' value='Login'>
-  <input id='register' type='button' value='Register'>
+  <input id='loginUser' type='button' value='Login'>
+  <input id='registerUser' type='button' value='Register'>
   </div>
 </div>
 

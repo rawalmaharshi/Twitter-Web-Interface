@@ -1,11 +1,11 @@
-defmodule Proj4.TwitterServer do
+defmodule TwitterPhx.TwitterServer do
     use GenServer
     use Phoenix.Channel
 
     @me __MODULE__
 
-    def start_link(arg) do
-        GenServer.start_link(@me, arg, name: @me)
+    def start_link() do
+        IO.inspect GenServer.start_link(@me, %{}, name: @me)
     end
 
     def init(init_state) do

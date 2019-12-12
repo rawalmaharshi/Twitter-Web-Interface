@@ -63,7 +63,7 @@
     
   }
   
-  #register
+  #registerUser
   {
     background-color: #008CBA;
     border: none;
@@ -77,7 +77,7 @@
   
   }
   
-  #login
+  #loginUser
   {
     background-color: #008CBA;
     border: none;

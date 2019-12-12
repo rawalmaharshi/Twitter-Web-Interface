@@ -2,8 +2,7 @@ defmodule TwitterPhxWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", TwitterPhxWeb.RoomChannel
-  channel "channelfile", TwitterPhxWeb.ChannelFile
+  channel "twitter:interface", TwitterPhxWeb.ChannelFile
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # Socket params are passed from the client and can

@@ -1,6 +1,6 @@
 defmodule TwitterPhxWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :twitterPhx
-  alias Proj4.TwitterServer
+  alias TwitterPhx.TwitterServer
 
   socket "/socket", TwitterPhxWeb.UserSocket,
     websocket: true,
@@ -44,4 +44,8 @@ defmodule TwitterPhxWeb.Endpoint do
     signing_salt: "b7rXKsU+"
 
   plug TwitterPhxWeb.Router
+  
+  # def init(_key, config) do  
+  #   TwitterServer.start_link({})
+  # end
 end

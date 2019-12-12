@@ -17,6 +17,7 @@ defmodule TwitterPhx.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: TwitterPhx.Supervisor]
+    {:ok, _twitter_server_pid} = TwitterPhx.TwitterServer.start_link()
     Supervisor.start_link(children, opts)
   end
 

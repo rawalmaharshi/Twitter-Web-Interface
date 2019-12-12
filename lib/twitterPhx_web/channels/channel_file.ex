@@ -1,15 +1,16 @@
 defmodule TwitterPhxWeb.ChannelFile do
     use Phoenix.Channel
-    alias TwitterPhxWeb.Memory
+    alias TwitterServerFrontEnd
   
-    def join("channelfile", _payload, socket) do
+    def join("twitter:interface", _payload, socket) do
       {:ok, socket}
     end
   
-    def handle_in("register", payload, socket) do          
+    def handle_in("register", payload, socket) do 
+      IO.puts "in the register event"         
       username = Map.get(payload, "name")
       password = Map.get(payload, "password")
-      case GenServer.call(Proj4.TwitterServer, {:register, username, password, "userpid"}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -21,7 +22,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("login", payload, socket) do
       username = Map.get(payload, "name")
       password = Map.get(payload, "password")
-      case GenServer.call(Proj4.TwitterServer, {:login, username, password,"client_pid"}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:login, username, password,"client_pid"}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -32,7 +33,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     
     def handle_in("logout", payload, socket) do
       username = Map.get(payload, "name")      
-      case GenServer.call(Proj4.TwitterServer, {:logout, username,"client_pid"}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:logout, username,"client_pid"}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -44,7 +45,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("follow", payload, socket) do
       subscriber = Map.get(payload, "following")
       subscribed_to = Map.get(payload, "follower")      
-      case GenServer.call(Proj4.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -56,7 +57,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("send_tweet", payload, socket) do
       username = Map.get(payload, "name")
       tweet = Map.get(payload, "tweet")      
-      case GenServer.cast(Proj4.TwitterServer, {:send_tweet, username, tweet}) do
+      case GenServer.cast(TwitterPhx.TwitterServer, {:send_tweet, username, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -70,7 +71,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       username1 = Map.get(payload, "username1")
       username2 = Map.get(payload, "username2")
       tweet = Map.get(payload, "tweet")            
-      case GenServer.cast(Proj4.TwitterServer, {:retweet, username1, username2, tweet}) do
+      case GenServer.cast(TwitterPhx.TwitterServer, {:retweet, username1, username2, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
@@ -81,7 +82,7 @@ defmodule TwitterPhxWeb.ChannelFile do
 
     def handle_in("search_hashtag", payload, socket) do      
       hashtag = Map.get(payload, "hashtag")      
-      response =  GenServer.call(Proj4.TwitterServer, {:search_hashtag, hashtag})
+      response =  GenServer.call(TwitterPhx.TwitterServer, {:search_hashtag, hashtag})
       msg = "Search result for hashtag #{hashtag} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
@@ -89,7 +90,7 @@ defmodule TwitterPhxWeb.ChannelFile do
 
     def handle_in("search_username", payload, socket) do
       username = Map.get(payload, "username")      
-      response =  GenServer.call(Proj4.TwitterServer, {:search_user, username})
+      response =  GenServer.call(TwitterPhx.TwitterServer, {:search_user, username})
       msg = "Search result for username #{username} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
