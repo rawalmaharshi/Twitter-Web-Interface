@@ -8,38 +8,50 @@ defmodule TwitterPhxWeb.ChannelFile do
     end
   
     def handle_in("register", payload, socket) do 
-      IO.puts "in the register event"         
-      IO.inspect payload
       username = Map.get(payload, "username")
       password = Map.get(payload, "password")
-      case GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
+      map = %{}
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
         {:ok, msg} ->
+          map = Map.put(map, :reply, :ok)
+          map = Map.put(map, :message, msg)
+          push socket, "register", map
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          map = Map.put(map, :reply, :error)
+          map = Map.put(map, :message, msg)
+          push socket, "register",  map
+          {:reply, {:error, msg}, socket}
       end      
       {:noreply, socket}
     end
 
     def handle_in("login", payload, socket) do
-      username = Map.get(payload, "name")
+      username = Map.get(payload, "username")
       password = Map.get(payload, "password")
-      case GenServer.call(TwitterPhx.TwitterServer, {:login, username, password,"client_pid"}) do
+      map = %{}
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:login, username, password,"client_pid"}) do
         {:ok, msg} ->
+          map = Map.put(map, :reply, :ok)
+          map = Map.put(map, :message, msg)
+          push socket, "login", map
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          map = Map.put(map, :reply, :error)
+          map = Map.put(map, :message, msg)
+          push socket, "login",  map
+          {:reply, {:error, msg}, socket}
       end      
       {:noreply, socket}
     end
     
     def handle_in("logout", payload, socket) do
       username = Map.get(payload, "name")      
-      case GenServer.call(TwitterPhx.TwitterServer, {:logout, username,"client_pid"}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:logout, username,"client_pid"}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          {:reply, {:error, msg}, socket}
       end
       {:noreply, socket}
     end
@@ -47,11 +59,11 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("follow", payload, socket) do
       subscriber = Map.get(payload, "following")
       subscribed_to = Map.get(payload, "follower")      
-      case GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          {:reply, {:error, msg}, socket}
       end
       {:noreply, socket}
     end
@@ -59,11 +71,11 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("send_tweet", payload, socket) do
       username = Map.get(payload, "name")
       tweet = Map.get(payload, "tweet")      
-      case GenServer.cast(TwitterPhx.TwitterServer, {:send_tweet, username, tweet}) do
+      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:send_tweet, username, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          {:reply, {:error, msg}, socket}
       end
       {:noreply, socket}
     end       
@@ -73,18 +85,18 @@ defmodule TwitterPhxWeb.ChannelFile do
       username1 = Map.get(payload, "username1")
       username2 = Map.get(payload, "username2")
       tweet = Map.get(payload, "tweet")            
-      case GenServer.cast(TwitterPhx.TwitterServer, {:retweet, username1, username2, tweet}) do
+      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:retweet, username1, username2, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->
-          {:reply, {:ok, msg}, socket}
+          {:reply, {:error, msg}, socket}
       end
       {:noreply, socket}
     end    
 
     def handle_in("search_hashtag", payload, socket) do      
       hashtag = Map.get(payload, "hashtag")      
-      response =  GenServer.call(TwitterPhx.TwitterServer, {:search_hashtag, hashtag})
+      IO.inspect response =  GenServer.call(TwitterPhx.TwitterServer, {:search_hashtag, hashtag})
       msg = "Search result for hashtag #{hashtag} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
@@ -92,7 +104,7 @@ defmodule TwitterPhxWeb.ChannelFile do
 
     def handle_in("search_username", payload, socket) do
       username = Map.get(payload, "username")      
-      response =  GenServer.call(TwitterPhx.TwitterServer, {:search_user, username})
+      IO.inspect response =  GenServer.call(TwitterPhx.TwitterServer, {:search_user, username})
       msg = "Search result for username #{username} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}

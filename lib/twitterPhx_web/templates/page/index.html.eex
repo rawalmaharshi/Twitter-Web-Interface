@@ -1,10 +1,7 @@
-
-
-<div id='screen'>
 <div class='row form-group'>
-<div>
-<h2 align='center' color='blue'> TWITTER </h2>
-</div>
+  <div>
+    <h2 align='center' color='blue'> TWITTER </h2>
+  </div>
   <div class='col-md-3'>
     <input type='text' id='userName' class='form-control' placeholder='Username' />
   </div>
@@ -15,9 +12,9 @@
   <input id='loginUser' type='button' value='Login'>
   <input id='registerUser' type='button' value='Register'>
   </div>
+
+
 </div>
-
-
 
 <div id='homepage'> 
 <div>

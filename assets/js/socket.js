@@ -10,8 +10,13 @@ let channel = socket.channel("twitter:interface", {})
 
 // Get access to DOM elements from their ids
 let registerUser = document.getElementById("registerUser")
+let loginUser = document.getElementById("loginUser")
 let name = document.getElementById("userName")
 let password = document.getElementById("password")
+
+channel.on('register', (payload) => {
+  console.log(payload)
+})
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -19,7 +24,25 @@ registerUser.addEventListener('click', e => {
     //Use a hashing algorithm here (authentication method used in the class)
     password: password.value
   });
+  name.value = ""
+  password.value = ""
 });
+
+channel.on('login', (payload) => {
+  console.log(payload)
+  //Here if payload.reply is equal to ok ie logged in correctly, hide the login register elements and show the user feed
+});
+
+loginUser.addEventListener('click', e => {
+  channel.push('login', {
+    username: name.value,
+    password: password.value
+  });
+  // name.value = ""
+  // password.value = ""
+});
+
+
 
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
