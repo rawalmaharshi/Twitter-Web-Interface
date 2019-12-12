@@ -44,8 +44,4 @@ defmodule TwitterPhxWeb.Endpoint do
     signing_salt: "b7rXKsU+"
 
   plug TwitterPhxWeb.Router
-  
-  # def init(_key, config) do  
-  #   TwitterServer.start_link({})
-  # end
 end

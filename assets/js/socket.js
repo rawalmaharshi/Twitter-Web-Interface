@@ -15,9 +15,9 @@ let password = document.getElementById("password")
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
-    username: name,
+    username: name.value,
     //Use a hashing algorithm here (authentication method used in the class)
-    password: password
+    password: password.value
   });
 });
 

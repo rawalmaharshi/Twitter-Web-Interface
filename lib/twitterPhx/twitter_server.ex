@@ -1,7 +1,7 @@
 defmodule TwitterPhx.TwitterServer do
     use GenServer
     use Phoenix.Channel
-
+    :observer.start
     @me __MODULE__
 
     def start_link() do

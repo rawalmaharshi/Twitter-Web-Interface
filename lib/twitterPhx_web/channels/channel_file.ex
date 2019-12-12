@@ -1,6 +1,7 @@
 defmodule TwitterPhxWeb.ChannelFile do
     use Phoenix.Channel
     alias TwitterServerFrontEnd
+    :observer.start
   
     def join("twitter:interface", _payload, socket) do
       {:ok, socket}
@@ -8,7 +9,8 @@ defmodule TwitterPhxWeb.ChannelFile do
   
     def handle_in("register", payload, socket) do 
       IO.puts "in the register event"         
-      username = Map.get(payload, "name")
+      IO.inspect payload
+      username = Map.get(payload, "username")
       password = Map.get(payload, "password")
       case GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
         {:ok, msg} ->
