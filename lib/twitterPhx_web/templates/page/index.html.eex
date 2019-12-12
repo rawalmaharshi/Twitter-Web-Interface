@@ -1,4 +1,4 @@
-<div class='row form-group'>
+<div class='row' id="loginRegisterDiv">
   <div>
     <h2 align='center' color='blue'> TWITTER </h2>
   </div>
@@ -12,8 +12,9 @@
   <input id='loginUser' type='button' value='Login'>
   <input id='registerUser' type='button' value='Register'>
   </div>
-
-
+</div>
+<div id = "error_div">
+  <p id="error_text"></p>
 </div>
 
 <div id='homepage'> 

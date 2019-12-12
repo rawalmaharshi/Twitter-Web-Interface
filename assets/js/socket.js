@@ -7,7 +7,6 @@ socket.connect()
 // Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("twitter:interface", {})
 
-
 // Get access to DOM elements from their ids
 let registerUser = document.getElementById("registerUser")
 let loginUser = document.getElementById("loginUser")
@@ -16,6 +15,14 @@ let password = document.getElementById("password")
 
 channel.on('register', (payload) => {
   console.log(payload)
+  if (payload.reply == "error") {
+    let errorDiv = document.getElementById("error_div")
+    let pTag = document.createElement("p")
+    let text = document.createTextNode(payload.message);
+    pTag.appendChild(text)
+    errorDiv.appendChild(pTag)
+    errorDiv.setAttribute("display", "block")
+  }
 })
 
 registerUser.addEventListener('click', e => {
@@ -24,13 +31,25 @@ registerUser.addEventListener('click', e => {
     //Use a hashing algorithm here (authentication method used in the class)
     password: password.value
   });
-  name.value = ""
-  password.value = ""
+  // name.value = ""
+  // password.value = ""
 });
 
 channel.on('login', (payload) => {
   console.log(payload)
+  if (payload.reply == "error") {
+    let errorDiv = document.getElementById("error_div")
+    let pTag = document.createElement("p")
+    let text = document.createTextNode(payload.message);
+    pTag.appendChild(text)
+    errorDiv.appendChild(pTag)
+    errorDiv.setAttribute("display", "block")
+  }
+
   //Here if payload.reply is equal to ok ie logged in correctly, hide the login register elements and show the user feed
+  if (payload.reply == "ok") {
+
+  }
 });
 
 loginUser.addEventListener('click', e => {
