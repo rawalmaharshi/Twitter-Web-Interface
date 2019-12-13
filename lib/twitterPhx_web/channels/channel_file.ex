@@ -99,10 +99,10 @@ defmodule TwitterPhxWeb.ChannelFile do
     end
 
     def handle_in("send_retweet", payload, socket) do
-      username1 = Map.get(payload, "username1")
-      username2 = Map.get(payload, "username2")
+      orignalTweeter = Map.get(payload, "originalTweetSender")
+      retweeter = Map.get(payload, "reTweeter")
       tweet = Map.get(payload, "tweet")            
-      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:retweet, username1, username2, tweet}) do
+      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:retweet, orignalTweeter, retweeter, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->

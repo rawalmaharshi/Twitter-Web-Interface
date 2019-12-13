@@ -77,7 +77,7 @@ defmodule TwitterPhx.TwitterServer do
     end
 
     def handle_call({:retweet, user}, _from, state) do
-        {:reply, get_tweets(user) ,state}
+        {:reply, retweet(origTweeter, reTweeter, tweet) ,state}
     end
 
     def handle_call({:searchhashtag, name}, _from, state) do
