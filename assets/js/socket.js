@@ -18,6 +18,7 @@ let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
 let deleteAccountButton = document.getElementById("deleteAccount")
+let list = document.getElementById("message-list")
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -97,7 +98,10 @@ deleteAccountButton.addEventListener('click', e => {
 });
 
 
-
+channel.on('receive_tweet', payload => {
+  list.append(`<b>${payload.name || 'Celebrity'} tweeted : </b> ${payload.message}<br>`);
+  list.prop({scrollTop: list.prop("scrollHeight")});
+});
 
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })

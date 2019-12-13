@@ -161,6 +161,17 @@ defmodule TwitterPhx.TwitterServer do
                                 IO.puts "User #{x} doesn't exist. !!!!!You can't tag this user!!!"
                         end
                     end)
+
+                    for ax <- subscriber do
+                        case isLoggedin(ax) do
+                            {:ok, status} -> 
+                                if status == true do
+                                    # push(ax, "receive_tweet", %{"message" => tweet, "name" => username}) 
+                                end
+                            {:error, msg} -> IO.inspect msg                                                                           
+                        end                         
+                    end
+
                     IO.puts ("Tweet sent by #{username}")
                     _message = {:ok, "Tweet sent!"}
                 else
