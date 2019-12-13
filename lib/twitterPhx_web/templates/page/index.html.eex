@@ -107,7 +107,7 @@
   
   <div id="userFeedDiv">
     <h3>User Feed</h3>
-    <div class="row" id="userFeed">
+    <div class="rows" id="userFeed">
     </div>
   </div>
 </div>
