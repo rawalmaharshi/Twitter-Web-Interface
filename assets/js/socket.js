@@ -96,9 +96,6 @@ deleteAccountButton.addEventListener('click', e => {
   });
 });
 
-
-
-
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })

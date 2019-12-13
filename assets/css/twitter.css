@@ -24,15 +24,13 @@ color: #e74c3c!important;
   margin-bottom: 10px;
 }
 
-#message-list {
-    border: 1px solid #777;
-    height: 300px;
+#userFeed {
+    border: 1px solid #eaeae7;
+    min-height: 300px;
     padding: 10px;
-    overflow: scroll;
     margin-top: 30px;
     margin-bottom: 50px;
-    background-color: whitesmoke;
-  
+    background-color: #00acee14;
   }
   
   #userHome{
