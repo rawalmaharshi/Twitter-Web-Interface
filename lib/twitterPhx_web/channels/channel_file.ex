@@ -98,7 +98,6 @@ defmodule TwitterPhxWeb.ChannelFile do
       {:noreply, socket}
     end
 
-    #not sure about this
     def handle_in("send_retweet", payload, socket) do
       username1 = Map.get(payload, "username1")
       username2 = Map.get(payload, "username2")

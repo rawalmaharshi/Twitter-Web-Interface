@@ -123,7 +123,10 @@ deleteAccountButton.addEventListener('click', e => {
 channel.on('receive_tweets', (payload) => {
   console.log(payload);
   //Create a child of user feed's dom element
-  $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >Tweet by ${payload.tweet_sender}:</b>  ${payload.tweet} </p>`);
+  let pTag = $(`<p style="margin: 0 0"><b style="color: #00ACEE": >Tweet by ${payload.tweet_sender}:</b>  ${payload.tweet}     </p>`)
+  let reButton = $(`<button class="btn btn-sm buttons" style="height: 1.8rem; line-height: 1.8rem; margin: auto">Retweet</button>`)
+  pTag.append(reButton)
+  $('#userFeed').append(pTag);
 });
 
 channel.on('receive_response', payload => {
