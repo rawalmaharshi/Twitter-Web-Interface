@@ -69,6 +69,22 @@ defmodule TwitterPhxWeb.ChannelFile do
       end      
       {:noreply, socket}
     end
+
+    def handle_in("subscribe", payload, socket) do
+      IO.inspect payload
+      subscriber = Map.get(payload, "subscriber")
+      subscribed_to = Map.get(payload, "subscribe_to")      
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
+        {:ok, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+      end      
+      {:noreply, socket}
+    end
+    
     def handle_in("send_tweet", payload, socket) do
       username = Map.get(payload, "username")
       tweet = Map.get(payload, "userTweet")
@@ -116,7 +132,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
     end  
-    
+
     def handle_in("receive_tweet", payload, socket) do      
       {:noreply, socket}
     end
