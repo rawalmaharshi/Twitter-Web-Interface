@@ -104,12 +104,12 @@ defmodule TwitterPhx.TwitterServer do
     
     def delete_account(username) do
         case :ets.lookup(:user, username) do
-            [{username, _, _ , following_list, _ , onlinestatus, _}] -> 
+            [{username, _, _ , following_list, _ , onlinestatus, _, _}] -> 
                 if onlinestatus == true do
                     Enum.each(following_list, fn(x) -> 
                         unsubscribe_user(username, x)
                     end)
-                    [{_ , _, followers_list2 , _, _, _, _}] = :ets.lookup(:user, username)
+                    [{_ , _, followers_list2 , _, _, _, _, _}] = :ets.lookup(:user, username)
                     Enum.each(followers_list2, fn(x) -> 
                         unsubscribe_user(x, username)
                     end)

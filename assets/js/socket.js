@@ -18,12 +18,15 @@ let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
 let deleteAccountButton = document.getElementById("deleteAccount")
+<<<<<<< HEAD
 let hash_tag_name = document.getElementById("searchHashtag")
 let hash_tag_button = document.getElementById("searchHashtagButton")
 let search_user_mention = document.getElementById("searchUserMention")
 let search_user_button = document.getElementById("searchUserMentionButton")
 
 
+=======
+>>>>>>> 16706f855ba30a5a3f20ed8ce6fbdfb3ed1b2333
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -114,6 +117,9 @@ deleteAccountButton.addEventListener('click', e => {
     username: name.value,
     password: password.value
   });
+  $('#logoutDeleteButtons').css("display", "none")
+  $("#userHome").css("display", "none")
+  $("#loginRegisterDiv").css("display", "block")
 });
 
 channel.on('receive_tweets', (payload) => {
