@@ -10,7 +10,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       username = Map.get(payload, "username")
       password = Map.get(payload, "password")
       map = %{}
-      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:register, username, password}) do
         {:ok, msg} ->
           map = Map.put(map, :reply, :ok)
           map = Map.put(map, :message, msg)
@@ -29,7 +29,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       username = Map.get(payload, "username")
       password = Map.get(payload, "password")
       map = %{}
-      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:login, username, password,"client_pid"}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:login, username, password, socket}) do
         {:ok, msg} ->
           map = Map.put(map, :reply, :ok)
           map = Map.put(map, :message, msg)

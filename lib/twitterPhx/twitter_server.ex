@@ -26,18 +26,18 @@ defmodule TwitterPhx.TwitterServer do
         {:noreply, state}
     end
 
-    def handle_call({:register, username , password, user_pid}, _from, state) do
+    def handle_call({:register, username , password}, _from, state) do
         password = hashFunctionpassword(password)
-        {:reply, add_newuser(username, password, user_pid), state}
+        {:reply, add_newuser(username, password), state}
     end
 
-    def handle_call({:login, username, password, client_pid}, _from, state) do
+    def handle_call({:login, username, password, user_socket}, _from, state) do
         password = hashFunctionpassword(password)
-        {:reply, authenticate(username, password, client_pid), state}
+        {:reply, authenticate(username, password, user_socket), state}
     end
 
-    def handle_call({:logout, username, client_pid}, _from, state) do
-        {:reply, logout(username, client_pid), state}        
+    def handle_call({:logout, username, user_socket}, _from, state) do
+        {:reply, logout(username, user_socket), state}        
     end
 
     def handle_call({:delete_account, username, password}, _from ,state) do
@@ -89,11 +89,11 @@ defmodule TwitterPhx.TwitterServer do
         end
     end
 
-    def logout(username, _client_pid) do
+    def logout(username, user_socket) do
         case :ets.lookup(:user, username) do
-        [{u, p, s1, s2, t,  onlinestatus, client_pid}] ->
+        [{u, p, s1, s2, t,  onlinestatus, user_socket, status}] ->
             if onlinestatus do
-                :ets.insert(:user, {u, p, s1, s2, t, false, client_pid})
+                :ets.insert(:user, {u, p, s1, s2, t, false, user_socket, :null})
                 {:ok, "Logged out successfully!!"}
             else
                 {:error , "!!!!you are not logged in.!!!!"}
@@ -111,7 +111,7 @@ defmodule TwitterPhx.TwitterServer do
                         Enum.each(following_list, fn(x) -> 
                             unsubscribe_user(username, x)
                         end)
-                        [{_ , _, followers_list2 , _, _, _, _}] = :ets.lookup(:user, username)
+                        [{_ , _, followers_list2 , _, _, _, _, _}] = :ets.lookup(:user, username)
                         Enum.each(followers_list2, fn(x) -> 
                             unsubscribe_user(x, username)
                         end)
@@ -132,9 +132,9 @@ defmodule TwitterPhx.TwitterServer do
             {:ok, status} ->
                 if status do
                     #adding the tweet on the tweeter handle of the user
-                    [{username, password , subscriber , subscribing , tweets_list, onlinestatus, pid}] = :ets.lookup(:user, username)
+                    [{username, password , subscriber , subscribing , tweets_list, onlinestatus, user_socket, status}] = :ets.lookup(:user, username)
                     if !Enum.member?(tweets_list, tweet) do
-                        :ets.insert(:user, {username, password , subscriber , subscribing ,[tweet | tweets_list] , onlinestatus, pid})
+                        :ets.insert(:user, {username, password , subscriber , subscribing ,[tweet | tweets_list] , onlinestatus, user_socket, status})
                     end
                     #adding the hastags in the hashtable
                     allhashtags = Regex.scan(~r/#[á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+/, tweet)
@@ -152,9 +152,9 @@ defmodule TwitterPhx.TwitterServer do
                     allusernames=  Regex.scan(~r/[á-úÁ-Úä-üÄ-Üa-zA-Z0-9@._]+@user+/, tweet)
                     Enum.each(allusernames, fn([x]) ->
                         case :ets.lookup(:user, x) do
-                            [{x, password2 , subscriber2 , subscribing2 , tweets_list2, onlinestatus2, pid}] ->
+                            [{x, password2 , subscriber2 , subscribing2 , tweets_list2, onlinestatus2, user_socket, status}] ->
                                 if !Enum.member?(tweets_list, tweet) do                
-                                    :ets.insert(:user, {x,  password2 , subscriber2 , subscribing2 ,[tweet | tweets_list2], onlinestatus2, pid})
+                                    :ets.insert(:user, {x,  password2 , subscriber2 , subscribing2 ,[tweet | tweets_list2], onlinestatus2, user_socket, status})
                                 end
                             [] -> 
                                 IO.puts "User #{x} doesn't exist. !!!!!You can't tag this user!!!"
@@ -296,28 +296,28 @@ defmodule TwitterPhx.TwitterServer do
         end
     end
 
-    def add_newuser(userName, password, user_pid) do        
+    def add_newuser(userName, password) do        
         if checkuser(userName) do
             {:error, "This user already exists."}
         else
-            :ets.insert_new(:user, {userName, password, [], [], [], false, user_pid})
+            :ets.insert_new(:user, {userName, password, [], [], [], false, :null, :null})
             {:ok, "New user #{userName} successfully added"}
         end
     end
 
     def checkuser(username) do
         case :ets.lookup(:user, username) do
-            [{_, _, _, _, _, _, _}] -> true
+            [{_, _, _, _, _, _, _, _}] -> true
             [] -> false
         end
     end
 
-    def authenticate(username, password, _client_pid) do
+    def authenticate(username, password, user_socket) do
         case :ets.lookup(:user, username) do
-            [{username, p, s1 , s2, t, onlinestatus, client_pid}] -> 
+            [{username, p, s1 , s2, t, onlinestatus, user_socket_info, status}] -> 
                 if onlinestatus == false do
                     if p == password do
-                        :ets.insert(:user, {username, p, s1 , s2, t, true, client_pid})
+                        :ets.insert(:user, {username, p, s1 , s2, t, true, user_socket, user_socket})
                         {:ok, "Logged in successfully!!"}    
                     else
                         {:error, "You have entered a wrong password. Try again!"}                       
@@ -331,7 +331,7 @@ defmodule TwitterPhx.TwitterServer do
 
     def isLoggedin(username) do
         case :ets.lookup(:user, username) do
-            [{_, _, _, _, _, x, _pid}] -> {:ok, x}
+            [{_, _, _, _, _, x, _socket, _status}] -> {:ok, x}
             [] -> {:error, "Register first to send the tweets"}
         end        
     end
