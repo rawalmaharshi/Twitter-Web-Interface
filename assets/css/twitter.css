@@ -39,25 +39,6 @@ color: #e74c3c!important;
     display: none;
   }
   
-  #send-tweet-list {
-    border: 1px solid #777;
-    height: 100px;
-    padding: 10px;
-    overflow: scroll;
-    margin-bottom: 50px;
-  
-  }
-  
-  #tweetbox {
-    border: 1px solid #777;
-    height: 70px;
-    width: 700px;
-    padding: 10px;
-    overflow: scroll;
-    margin-top: 50px;
-   
-  }
-  
   #hashtag{
     margin: 20px;
   }

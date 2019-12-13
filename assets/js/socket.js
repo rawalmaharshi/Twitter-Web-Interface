@@ -18,7 +18,6 @@ let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
 let deleteAccountButton = document.getElementById("deleteAccount")
-let list = document.getElementById("message-list")
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
