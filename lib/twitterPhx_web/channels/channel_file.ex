@@ -128,8 +128,6 @@ defmodule TwitterPhxWeb.ChannelFile do
       {:noreply, socket}
     end  
 
-   
-
     def handle_in("receive_tweet", payload, socket) do      
       {:noreply, socket}
     end
