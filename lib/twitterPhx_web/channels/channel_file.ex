@@ -102,7 +102,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       orignalTweeter = Map.get(payload, "originalTweetSender")
       retweeter = Map.get(payload, "reTweeter")
       tweet = Map.get(payload, "tweet")            
-      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:retweet, orignalTweeter, retweeter, tweet}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:retweet, orignalTweeter, retweeter, tweet}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
         {:error, msg} ->

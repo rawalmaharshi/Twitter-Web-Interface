@@ -76,7 +76,7 @@ defmodule TwitterPhx.TwitterServer do
         {:reply, get_tweets(username) ,state}
     end
 
-    def handle_call({:retweet, user}, _from, state) do
+    def handle_call({:retweet, origTweeter, reTweeter, tweet}, _from, state) do
         {:reply, retweet(origTweeter, reTweeter, tweet) ,state}
     end
 
@@ -180,6 +180,25 @@ defmodule TwitterPhx.TwitterServer do
             {:error, message} ->
                 {:error, message}            
         end
+    end
+
+    def retweet(origTweeter, reTweeter, tweet) do
+        # No changes in tables, just need to push a socket event
+        #Need to get sockets of subscribers of retweeters
+        [{_, _, subscriber , _, _, _, _, _}] = :ets.lookup(:user, reTweeter)
+        numSubscribers = length(subscriber)
+        if numSubscribers > 0 do
+            Enum.each(0..(numSubscribers - 1), fn subs -> 
+                #push tweets to subscribed user's wall
+                {_, currentSubSocket} = getUserSocket(Enum.at(subscriber, subs))
+                map = %{}
+                map = Map.put(map, :origTweeter, origTweeter)
+                map = Map.put(map, :retweeter, reTweeter)
+                map = Map.put(map, :tweet, tweet)
+                push currentSubSocket, "receive_retweets", map
+            end)    
+        end
+        {:ok, "Retweet Sent!"}
     end
 
     def getServerState() do

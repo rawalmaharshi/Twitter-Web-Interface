@@ -147,6 +147,15 @@ channel.on('receive_tweets', (payload) => {
   });
 });
 
+channel.on('receive_retweets', (payload) => {
+  console.log('In the retweets event', payload);
+  let pTag = document.createElement('p')
+  pTag.style.margin = "0 0"
+  pTag.innerHTML = `<b style="color: #00ACEE": > User ${payload.retweeter} retweeted user ${payload.origTweeter}'s tweet:</b> ${payload.tweet}`
+  let userFeed = document.getElementById("userFeed")
+  userFeed.append(pTag);
+})
+
 channel.on('receive_response', payload => {
   console.log(payload);
   $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >${payload.message} </b>  ${payload.result}<br>`);
