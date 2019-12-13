@@ -82,6 +82,14 @@ defmodule TwitterPhx.TwitterServer do
         {:reply, get_tweets(user) ,state}
     end
 
+    def search(name) do
+        if length(Regex.scan(~r/#[á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+/,name))!=0 do
+            get_hashtag_posts(name)
+        else
+            get_tweets(name)
+        end
+    end
+
     def logout(username, _client_pid) do
         case :ets.lookup(:user, username) do
         [{u, p, s1, s2, t,  onlinestatus, client_pid}] ->

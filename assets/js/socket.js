@@ -12,8 +12,12 @@ let registerUser = document.getElementById("registerUser")
 let loginUser = document.getElementById("loginUser")
 let name = document.getElementById("userName")
 let password = document.getElementById("password")
+let sendTweets = document.getElementById("send_tweet_button")
+let tweets = document.getElementById("Tweet_Box")
 let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
+let deleteAccount = document.getElementById("deleteAccountButton")
+let logoutAccount = document.getElementById("LOGOUTBUTTON")
 
 channel.on('register', (payload) => {
   console.log(payload)
@@ -33,8 +37,8 @@ registerUser.addEventListener('click', e => {
     //Use a hashing algorithm here (authentication method used in the class)
     password: password.value
   });
-  // name.value = ""
-  // password.value = ""
+  name.value = ""
+  password.value = ""
 });
 
 channel.on('login', (payload) => {
@@ -59,10 +63,30 @@ loginUser.addEventListener('click', e => {
     username: name.value,
     password: password.value
   });
-  // name.value = ""
-  // password.value = ""
+  password.value = ""
 });
 
+// logoutAccount.addEventListener('click', e => {
+//   channel.push('logout', {
+//     username: name.value,
+//   });
+//   $("#homepage").css("display", "block")
+// });
+
+sendTweets.addEventListener('click', e => {
+  channel.push('send_tweet', {
+    username: name.value,
+    userTweet: tweets.value
+  });
+  tweets.value = "";
+});
+
+// deleteAccount.addEventListener('click', e => {
+//   channel.push('deleteAccount', {
+//     username: name.value,
+//     password: password.value
+//   });
+// });
 
 
 channel.join()
