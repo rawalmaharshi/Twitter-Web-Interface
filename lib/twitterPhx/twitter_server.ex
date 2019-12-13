@@ -28,10 +28,12 @@ defmodule TwitterPhx.TwitterServer do
     end
 
     def handle_call({:register, username , password, user_pid}, _from, state) do
+        password = hashFunctionpassword(password)
         {:reply, add_newuser(username, password, user_pid), state}
     end
 
     def handle_call({:login, username, password, client_pid}, _from, state) do
+        password = hashFunctionpassword(password)
         {:reply, authenticate(username, password, client_pid), state}
     end
 
@@ -40,6 +42,7 @@ defmodule TwitterPhx.TwitterServer do
     end
 
     def handle_call({:delete_account, username, password}, _from ,state) do
+        password = hashFunctionpassword(password)
         {:reply, delete_account(username,password),state}
     end
 
@@ -324,7 +327,11 @@ defmodule TwitterPhx.TwitterServer do
             [{_, _, _, _, _, x, _pid}] -> {:ok, x}
             [] -> {:error, "Register first to send the tweets"}
         end        
-    end  
+    end
+    
+    def hashFunctionpassword(input) do
+        :crypto.hash(:sha256, input) |> Base.encode16
+    end
 
     def get() do
         GenServer.call(@me, {:get})
