@@ -95,6 +95,9 @@ deleteAccountButton.addEventListener('click', e => {
     username: name.value,
     password: password.value
   });
+  $('#logoutDeleteButtons').css("display", "none")
+  $("#userHome").css("display", "none")
+  $("#loginRegisterDiv").css("display", "block")
 });
 
 channel.on('receive_tweets', (payload) => {
