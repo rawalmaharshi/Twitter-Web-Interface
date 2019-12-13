@@ -146,6 +146,7 @@ defmodule TwitterPhx.TwitterServer do
                     #adding the tweets on the wall of tagged users
                     allusernames=  Regex.scan(~r/@[á-úÁ-Úä-üÄ-Üa-zA-Z0-9@._]+/, tweet)
                     Enum.each(allusernames, fn([x]) ->
+                        x = String.slice(x,1..-1)
                         case :ets.lookup(:user, x) do
                             [{x, password2 , subscriber2 , subscribing2 , tweets_list2, onlinestatus2, user_socket, status}] ->
                                 if !Enum.member?(tweets_list, tweet) do                
@@ -233,7 +234,7 @@ defmodule TwitterPhx.TwitterServer do
     end
 
     def get_tweets_for_user_wall(username) do
-        [{_, _, _, following_list ,_ , _, _}] = :ets.lookup(:user, username)
+        [{_, _, _, following_list ,_ , _, _, _}] = :ets.lookup(:user, username)
          temp = Enum.reduce(following_list,[], fn (x, acc) ->
             if Regex.scan(~r/#[á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+/, x) != [] do
                 [ get_hashtag_posts(x) | acc]
@@ -247,7 +248,7 @@ defmodule TwitterPhx.TwitterServer do
 
     def get_tweets(username) do
         case :ets.lookup(:user,username) do
-            [{_, _, _, _ , tweet_list , _, _}] -> tweet_list
+            [{_, _, _, _ , tweet_list , _, _, _}] -> tweet_list
             [] -> "#{username} username not found"
         end
     end
