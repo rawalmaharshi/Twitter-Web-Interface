@@ -32,12 +32,8 @@ registerUser.addEventListener('click', e => {
 channel.on('register', (payload) => {
   console.log(payload)
   if (payload.reply == "error") {
-    let errorDiv = document.getElementById("error_div")
-    let pTag = document.createElement("p")
-    let text = document.createTextNode(payload.message);
-    pTag.appendChild(text)
-    errorDiv.appendChild(pTag)
-    errorDiv.setAttribute("display", "block")
+    $('#error_div').css("display", "block")
+    $('#error_text').text(payload.message);
   }
 });
 
@@ -52,16 +48,14 @@ loginUser.addEventListener('click', e => {
 channel.on('login', (payload) => {
   console.log(payload)
   if (payload.reply == "error") {
-    let errorDiv = document.getElementById("error_div")
-    let pTag = document.createElement("p")
-    let text = document.createTextNode(payload.message);
-    pTag.appendChild(text)
-    errorDiv.appendChild(pTag)
-    errorDiv.setAttribute("display", "block")
+    $('#error_div').css("display", "block")
+    $('#error_text').text(payload.message);
   }
 
   //Here if payload.reply is equal to ok ie logged in correctly, hide the login register elements and show the user feed
   if (payload.reply == "ok") {
+    $("#loginRegisterDiv").css("display", "none")
+    $('#error_text').text("");
     $("#homepage").css("display", "block")
   }
 });
@@ -78,7 +72,8 @@ logoutButton.addEventListener('click', e => {
   channel.push('logout', {
     username: name.value,
   });
-  $("#homepage").css("display", none)
+  $("#homepage").css("display", "none")
+  $("#loginRegisterDiv").css("display", "block")
 });
 
 sendTweets.addEventListener('click', e => {

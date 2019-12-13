@@ -6,6 +6,7 @@ defmodule TwitterPhx.Application do
   use Application
 
   def start(_type, _args) do
+    :observer.start
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
