@@ -73,10 +73,6 @@ subscribeButton.addEventListener('click', e => {
     subscriber: name.value,
     subscribe_to: subscribeUser.value
   });
-<<<<<<< HEAD
-  password.value = ""
-=======
->>>>>>> c34ae191f214fc28ece871ec9439240512b9bd34
 });
 
 // logoutAccount.addEventListener('click', e => {
