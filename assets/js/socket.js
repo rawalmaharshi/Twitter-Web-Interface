@@ -46,7 +46,6 @@ loginUser.addEventListener('click', e => {
     username: name.value,
     password: password.value
   });
-  name.value = ""
   password.value = ""
 });
 
@@ -75,12 +74,12 @@ subscribeButton.addEventListener('click', e => {
   });
 });
 
-// logoutButton.addEventListener('click', e => {
-//   channel.push('logout', {
-//     username: name.value,
-//   });
-//   $("#homepage").css("display", "block")
-// });
+logoutButton.addEventListener('click', e => {
+  channel.push('logout', {
+    username: name.value,
+  });
+  $("#homepage").css("display", none)
+});
 
 sendTweets.addEventListener('click', e => {
   channel.push('send_tweet', {
@@ -90,12 +89,12 @@ sendTweets.addEventListener('click', e => {
   tweets.value = "";
 });
 
-// deleteAccountButton.addEventListener('click', e => {
-//   channel.push('deleteAccount', {
-//     username: name.value,
-//     password: password.value
-//   });
-// });
+deleteAccountButton.addEventListener('click', e => {
+  channel.push('deleteAccount', {
+    username: name.value,
+    password: password.value
+  });
+});
 
 
 
