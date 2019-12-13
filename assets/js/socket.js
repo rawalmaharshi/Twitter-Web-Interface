@@ -12,6 +12,8 @@ let registerUser = document.getElementById("registerUser")
 let loginUser = document.getElementById("loginUser")
 let name = document.getElementById("userName")
 let password = document.getElementById("password")
+let subscribeUser = document.getElementById("subscribeToUser")
+let subscribeButton = document.getElementById("subscribeButton")
 
 channel.on('register', (payload) => {
   console.log(payload)
@@ -48,7 +50,7 @@ channel.on('login', (payload) => {
 
   //Here if payload.reply is equal to ok ie logged in correctly, hide the login register elements and show the user feed
   if (payload.reply == "ok") {
-
+    $("#homepage").css("display", "block")
   }
 });
 

@@ -19,8 +19,8 @@
 
 <div id='homepage'> 
 <div>
-<input type='text' id='followtext'  placeholder='Username' />
- <input id='follow' type='button' value='Follow'>
+<input type='text' id='subscribeToUser'  placeholder='Username' />
+ <input id='subscribeButton' type='button' value='Subscribe To Tweets'>
 </div>
 
 <div>
