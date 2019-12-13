@@ -160,10 +160,10 @@ defmodule TwitterPhx.TwitterServer do
                                 IO.puts "User #{x} doesn't exist. !!!!!You can't tag this user!!!"
                         end
                     end)
-                    IO.puts ("Tweet sent by #{username}")
+                    # IO.puts ("Tweet sent by #{username}")
                     _message = {:ok, "Tweet sent!"}
                 else
-                    IO.puts "Please login first."
+                    # IO.puts "Please login first."
                     _message = {:error, "Please login first"}
                 end
             {:error, message} ->

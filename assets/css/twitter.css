@@ -1,5 +1,29 @@
 /* This file is for your main application css. */
 
+#error_div {
+  display: none;
+}
+
+.forms{
+  margin: 50px auto;
+  max-width: 500px;
+  width: 97%;
+  padding: 20px !important;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 2px rgba(0,0,0,.2);
+  position: relative;
+  background: #fff;
+  z-index: 100;
+}
+
+#error_text{
+color: #e74c3c!important;
+  margin-top: -10px !important;
+  display: block;
+  margin-bottom: 10px;
+}
+
 #message-list {
     border: 1px solid #777;
     height: 300px;
@@ -11,7 +35,7 @@
   
   }
   
-  #homepage{
+  #userHome{
     height: auto;
     width: auto;
     display: none;
@@ -47,101 +71,19 @@
   #retweet{
     margin: 20px;
   }
-  
-  #retweetbtn{
-  
-    background-color: #008CBA;
+
+  .buttons {
+    background-color: #00ACEE;
     border: none;
     color: white;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    
-  }
-  
-  #registerUser
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     margin-top: 4px;
-  
-  }
-  
-  #loginUser
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    margin-top: 4px;
-  
-  }
-  
-  #follow
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  
-  }
-  
-  #sendtweetbtn
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    margin-top: 4px;
-  
-  }
-  
-  #searchhashtagbtn
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  
-  }
-  
-  #searchusernamebtn
-  {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   
   }
 
-  #error-div {
+  #logoutDeleteButtons {
     display: none;
   }

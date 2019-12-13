@@ -12,8 +12,8 @@ let registerUser = document.getElementById("registerUser")
 let loginUser = document.getElementById("loginUser")
 let name = document.getElementById("userName")
 let password = document.getElementById("password")
-let sendTweets = document.getElementById("send_tweet_button")
-let tweets = document.getElementById("Tweet_Box")
+let sendTweets = document.getElementById("sendTweetButton")
+let tweet = document.getElementById("tweet")
 let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
@@ -54,14 +54,14 @@ channel.on('login', (payload) => {
 
   //Here if payload.reply is equal to ok ie logged in correctly, hide the login register elements and show the user feed
   if (payload.reply == "ok") {
-    $("#loginRegisterDiv").css("display", "none")
+    $('#loginRegisterDiv').css("display", "none")
     $('#error_text').text("");
-    $("#homepage").css("display", "block")
+    $('#logoutDeleteButtons').css("display", "block")
+    $("#userHome").css("display", "block")
   }
 });
 
 subscribeButton.addEventListener('click', e => {
-  console.log(name.value, subscribeUser.value)
   channel.push('subscribe', {
     subscriber: name.value,
     subscribe_to: subscribeUser.value
@@ -72,16 +72,21 @@ logoutButton.addEventListener('click', e => {
   channel.push('logout', {
     username: name.value,
   });
-  $("#homepage").css("display", "none")
+  $('#logoutDeleteButtons').css("display", "none")
+  $("#userHome").css("display", "none")
   $("#loginRegisterDiv").css("display", "block")
 });
 
 sendTweets.addEventListener('click', e => {
   channel.push('send_tweet', {
     username: name.value,
-    userTweet: tweets.value
+    userTweet: tweet.value
   });
-  tweets.value = "";
+  tweet.value = "";
+});
+
+channel.on('get_tweets', (payload) => {
+  console.log(payload)
 });
 
 deleteAccountButton.addEventListener('click', e => {
