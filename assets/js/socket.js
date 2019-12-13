@@ -14,6 +14,8 @@ let name = document.getElementById("userName")
 let password = document.getElementById("password")
 let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
+let logoutButton = document.getElementById("logout")
+let deleteAccountButton = document.getElementById("deleteAccount")
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -70,6 +72,8 @@ subscribeButton.addEventListener('click', e => {
     subscribe_to: subscribeUser.value
   });
 });
+
+
 
 
 

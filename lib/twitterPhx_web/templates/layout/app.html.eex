@@ -15,6 +15,11 @@
           <img src="<%= Routes.static_path(@conn, "/images/twitterEngine.png") %>" alt="Twitter Engine Logo"/>
         </a>
       </section>
+      <ul>
+        <button type="button" id = "logout">Logout</button>
+        <button type="button" id = "deleteAccount">Delete Account</button>
+      </ul>
+      
     </header>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
