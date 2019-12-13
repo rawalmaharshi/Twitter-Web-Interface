@@ -96,6 +96,12 @@ deleteAccountButton.addEventListener('click', e => {
   });
 });
 
+channel.on('receive_tweets', (payload) => {
+  console.log(payload);
+  //Create a child of user feed's dom element
+  $('#userFeed').append(`<b>Tweet by ${payload.tweet_sender}:</b>  ${payload.tweet}<br>`);
+});
+
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })

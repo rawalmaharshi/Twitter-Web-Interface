@@ -160,6 +160,21 @@ defmodule TwitterPhx.TwitterServer do
                                 IO.puts "User #{x} doesn't exist. !!!!!You can't tag this user!!!"
                         end
                     end)
+
+                    #get the tweet sender's subscriber list, and push socket event
+                    [{_, _, subscriber , _, _, _, _, _}] = :ets.lookup(:user, username)
+                    numSubscribers = length(subscriber)
+                    if numSubscribers > 0 do
+                        Enum.each(0..(numSubscribers - 1), fn subs -> 
+                            #push tweets to subscribed user's wall
+                            {_, currentSubSocket} = getUserSocket(Enum.at(subscriber, subs))
+                            map = %{}
+                            map = Map.put(map, :tweet, tweet)
+                            map = Map.put(map, :tweet_sender, username)
+                            push currentSubSocket, "receive_tweets", map
+                        end)    
+                    end
+
                     # IO.puts ("Tweet sent by #{username}")
                     _message = {:ok, "Tweet sent!"}
                 else
@@ -342,5 +357,12 @@ defmodule TwitterPhx.TwitterServer do
 
     def get() do
         GenServer.call(@me, {:get})
+    end
+
+    def getUserSocket(userName) do
+        case :ets.lookup(:user, userName) do
+            [{_, _, _, _, _, _, user_socket, status}] -> {:ok, user_socket}
+            [] -> {:error, "Can't find user socket for this user name."}
+        end
     end
 end
