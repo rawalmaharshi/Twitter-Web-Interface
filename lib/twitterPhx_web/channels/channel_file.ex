@@ -113,12 +113,20 @@ defmodule TwitterPhxWeb.ChannelFile do
     end    
 
     def handle_in("search_hashtag", payload, socket) do      
-      hashtag = Map.get(payload, "hashtag")      
-      IO.inspect response =  GenServer.call(TwitterPhx.TwitterServer, {:search_hashtag, hashtag})
-      msg = "Search result for hashtag #{hashtag} : #{response}"
-      push  socket, "receive_response", %{"message" => msg}
+      hashtag = Map.get(payload, "hashy")      
+      result =  GenServer.call(TwitterPhx.TwitterServer, {:searchhashtag, hashtag})
+      msg = "Search result for #{hashtag} : "
+      push  socket, "receive_response", %{"message" => msg, "result" => result}
       {:noreply, socket}
     end  
+
+    def handle_in("search_username", payload, socket) do
+      username = Map.get(payload, "username")      
+      result =  GenServer.call(TwitterPhx.TwitterServer, {:searchuser, username})
+      msg = "Search result for #{username} : "
+      push  socket, "receive_response", %{"message" => msg, "result" => result}
+      {:noreply, socket}
+    end   
 
     def handle_in("receive_tweet", payload, socket) do      
       {:noreply, socket}

@@ -80,12 +80,12 @@ defmodule TwitterPhx.TwitterServer do
         {:reply, get_tweets(user) ,state}
     end
 
-    def search(name) do
-        if length(Regex.scan(~r/#[á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+/,name))!=0 do
-            get_hashtag_posts(name)
-        else
-            get_tweets(name)
-        end
+    def handle_call({:searchhashtag, name}, _from, state) do
+        {:reply, get_hashtag_posts(name) ,state}
+    end
+
+    def handle_call({:searchuser, name}, _from, state) do
+        {:reply, get_tweets(name) ,state}
     end
 
     def logout(username, user_socket) do
@@ -144,7 +144,7 @@ defmodule TwitterPhx.TwitterServer do
                         end
                     end)
                     #adding the tweets on the wall of tagged users
-                    allusernames=  Regex.scan(~r/[á-úÁ-Úä-üÄ-Üa-zA-Z0-9@._]+@user+/, tweet)
+                    allusernames=  Regex.scan(~r/@[á-úÁ-Úä-üÄ-Üa-zA-Z0-9@._]+/, tweet)
                     Enum.each(allusernames, fn([x]) ->
                         case :ets.lookup(:user, x) do
                             [{x, password2 , subscriber2 , subscribing2 , tweets_list2, onlinestatus2, user_socket, status}] ->
@@ -248,14 +248,14 @@ defmodule TwitterPhx.TwitterServer do
     def get_tweets(username) do
         case :ets.lookup(:user,username) do
             [{_, _, _, _ , tweet_list , _, _}] -> tweet_list
-            [] -> []
+            [] -> "#{username} username not found"
         end
     end
 
     def get_hashtag_posts(hashtag) do
         case :ets.lookup(:hashtags,hashtag) do
             [{ _ , tweet_list }] -> tweet_list
-            [] -> []
+            [] -> "#{hashtag} hastag not found"
         end
     end
 

@@ -18,7 +18,12 @@ let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
 let deleteAccountButton = document.getElementById("deleteAccount")
-let list = document.getElementById("message-list")
+let hash_tag_name = document.getElementById("searchHashtag")
+let hash_tag_button = document.getElementById("searchHashtagButton")
+let search_user_mention = document.getElementById("searchUserMention")
+let search_user_button = document.getElementById("searchUserMentionButton")
+
+
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -28,6 +33,20 @@ registerUser.addEventListener('click', e => {
   });
   // name.value = ""
   // password.value = ""
+});
+
+hash_tag_button.addEventListener('click', e => {
+  channel.push('search_hashtag', {
+    hashy: hash_tag_name.value,
+  });
+  hash_tag_name.value=""
+});
+
+search_user_button.addEventListener('click', e => {
+  channel.push('search_username', {
+    username: search_user_mention.value,
+  });
+  search_user_mention.value=""
 });
 
 channel.on('register', (payload) => {
@@ -100,7 +119,12 @@ deleteAccountButton.addEventListener('click', e => {
 channel.on('receive_tweets', (payload) => {
   console.log(payload);
   //Create a child of user feed's dom element
-  $('#userFeed').append(`<b>Tweet by ${payload.tweet_sender}:</b>  ${payload.tweet}<br>`);
+  $('#userFeed').append(`<b>Tweet by ${payload.tweet_sender} : </b>  ${payload.tweet}<br>`);
+});
+
+channel.on('receive_response', payload => {
+  console.log(payload);
+  $('#userFeed').append(`<b>${payload.message} </b>  ${payload.result}<br>`);
 });
 
 channel.join()
