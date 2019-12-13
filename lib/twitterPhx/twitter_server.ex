@@ -119,7 +119,7 @@ defmodule TwitterPhx.TwitterServer do
                         :ets.delete(:user, username)
                         {:ok, "!!!!!!!!Account has been deleted successfully!!!!!!!. We will miss you"}
                     else
-                        {:error, "You have entered a wrong password. Try again."}                       
+                        {:error, "Enter the right password.You have entered a wrong password"}                       
                     end
                 else
                     {:error, "You are logged out. please login first"}
