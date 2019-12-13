@@ -15,6 +15,16 @@ let password = document.getElementById("password")
 let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 
+registerUser.addEventListener('click', e => {
+  channel.push('register', {
+    username: name.value,
+    //Use a hashing algorithm here (authentication method used in the class)
+    password: password.value
+  });
+  // name.value = ""
+  // password.value = ""
+});
+
 channel.on('register', (payload) => {
   console.log(payload)
   if (payload.reply == "error") {
@@ -25,12 +35,11 @@ channel.on('register', (payload) => {
     errorDiv.appendChild(pTag)
     errorDiv.setAttribute("display", "block")
   }
-})
+});
 
-registerUser.addEventListener('click', e => {
-  channel.push('register', {
+loginUser.addEventListener('click', e => {
+  channel.push('login', {
     username: name.value,
-    //Use a hashing algorithm here (authentication method used in the class)
     password: password.value
   });
   // name.value = ""
@@ -54,13 +63,12 @@ channel.on('login', (payload) => {
   }
 });
 
-loginUser.addEventListener('click', e => {
-  channel.push('login', {
-    username: name.value,
-    password: password.value
+subscribeButton.addEventListener('click', e => {
+  console.log(name.value, subscribeUser.value)
+  channel.push('subscribe', {
+    subscriber: name.value,
+    subscribe_to: subscribeUser.value
   });
-  // name.value = ""
-  // password.value = ""
 });
 
 

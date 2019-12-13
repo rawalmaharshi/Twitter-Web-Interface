@@ -56,9 +56,10 @@ defmodule TwitterPhxWeb.ChannelFile do
       {:noreply, socket}
     end
 
-    def handle_in("follow", payload, socket) do
-      subscriber = Map.get(payload, "following")
-      subscribed_to = Map.get(payload, "follower")      
+    def handle_in("subscribe", payload, socket) do
+      IO.inspect payload
+      subscriber = Map.get(payload, "subscriber")
+      subscribed_to = Map.get(payload, "subscribe_to")      
       case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
