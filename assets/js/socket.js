@@ -86,6 +86,7 @@ subscribeButton.addEventListener('click', e => {
     subscriber: name.value,
     subscribe_to: subscribeUser.value
   });
+  subscribeUser.value = ""
 });
 
 logoutButton.addEventListener('click', e => {
@@ -122,12 +123,12 @@ deleteAccountButton.addEventListener('click', e => {
 channel.on('receive_tweets', (payload) => {
   console.log(payload);
   //Create a child of user feed's dom element
-  $('#userFeed').append(`<b>Tweet by ${payload.tweet_sender} : </b>  ${payload.tweet}<br>`);
+  $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >Tweet by ${payload.tweet_sender}:</b>  ${payload.tweet} </p>`);
 });
 
 channel.on('receive_response', payload => {
   console.log(payload);
-  $('#userFeed').append(`<b>${payload.message} </b>  ${payload.result}<br>`);
+  $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >${payload.message} </b>  ${payload.result}<br>`);
 });
 
 channel.join()
