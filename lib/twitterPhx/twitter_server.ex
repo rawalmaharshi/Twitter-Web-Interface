@@ -26,9 +26,9 @@ defmodule TwitterPhx.TwitterServer do
         {:noreply, state}
     end
 
-    def handle_call({:register, username , password, user_pid}, _from, state) do
+    def handle_call({:register, username , password}, _from, state) do
         password = hashFunctionpassword(password)
-        {:reply, add_newuser(username, password, user_pid), state}
+        {:reply, add_newuser(username, password), state}
     end
 
     def handle_call({:login, username, password, client_pid}, _from, state) do
@@ -40,9 +40,8 @@ defmodule TwitterPhx.TwitterServer do
         {:reply, logout(username, client_pid), state}        
     end
 
-    def handle_call({:delete_account, username, password}, _from ,state) do
-        password = hashFunctionpassword(password)
-        {:reply, delete_account(username,password),state}
+    def handle_call({:delete_account, username}, _from ,state) do
+        {:reply, delete_account(username),state}
     end
 
     def handle_call({:send_tweet, username, tweet}, _from, state) do
@@ -103,23 +102,19 @@ defmodule TwitterPhx.TwitterServer do
         end
     end
     
-    def delete_account(username,p) do
+    def delete_account(username) do
         case :ets.lookup(:user, username) do
-            [{username, password, _ , following_list, _ , onlinestatus, _}] -> 
+            [{username, _, _ , following_list, _ , onlinestatus, _}] -> 
                 if onlinestatus == true do
-                    if password == p do
-                        Enum.each(following_list, fn(x) -> 
-                            unsubscribe_user(username, x)
-                        end)
-                        [{_ , _, followers_list2 , _, _, _, _}] = :ets.lookup(:user, username)
-                        Enum.each(followers_list2, fn(x) -> 
-                            unsubscribe_user(x, username)
-                        end)
-                        :ets.delete(:user, username)
-                        {:ok, "!!!!!!!!Account has been deleted successfully!!!!!!!. We will miss you"}
-                    else
-                        {:error, "Enter the right password.You have entered a wrong password"}                       
-                    end
+                    Enum.each(following_list, fn(x) -> 
+                        unsubscribe_user(username, x)
+                    end)
+                    [{_ , _, followers_list2 , _, _, _, _}] = :ets.lookup(:user, username)
+                    Enum.each(followers_list2, fn(x) -> 
+                        unsubscribe_user(x, username)
+                    end)
+                    :ets.delete(:user, username)
+                    {:ok, "!!!!!!!!Account has been deleted successfully!!!!!!!. We will miss you"}
                 else
                     {:error, "You are logged out. please login first"}
                 end                
@@ -307,11 +302,11 @@ defmodule TwitterPhx.TwitterServer do
         end
     end
 
-    def add_newuser(userName, password, user_pid) do        
+    def add_newuser(userName, password) do        
         if checkuser(userName) do
             {:error, "This user already exists."}
         else
-            :ets.insert_new(:user, {userName, password, [], [], [], false, user_pid})
+            :ets.insert_new(:user, {userName, password, [], [], [], false, null})
             {:ok, "New user #{userName} successfully added"}
         end
     end

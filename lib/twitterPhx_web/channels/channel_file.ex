@@ -10,7 +10,7 @@ defmodule TwitterPhxWeb.ChannelFile do
       username = Map.get(payload, "username")
       password = Map.get(payload, "password")
       map = %{}
-      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:register, username, password, "userpid"}) do
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:register, username, password}) do
         {:ok, msg} ->
           map = Map.put(map, :reply, :ok)
           map = Map.put(map, :message, msg)
@@ -58,7 +58,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("deleteAccount", payload, socket) do
       IO.inspect username = Map.get(payload, "username")
       IO.inspect password = Map.get(payload, "password")
-      case GenServer.call(TwitterPhx.TwitterServer, {:delete_account, username, password}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:delete_account, username}) do
         {:ok, msg} ->
           IO.inspect msg
           {:reply, {:ok, msg}, socket}
