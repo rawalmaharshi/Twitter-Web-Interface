@@ -22,8 +22,9 @@ let hash_tag_name = document.getElementById("searchHashtag")
 let hash_tag_button = document.getElementById("searchHashtagButton")
 let search_user_mention = document.getElementById("searchUserMention")
 let search_user_button = document.getElementById("searchUserMentionButton")
-
-
+let sendMessageButton = document.getElementById("sendMessageButton")
+let messageText = document.getElementById("messageText")
+let messageReceiver = document.getElementById("messageReceiver")
 
 registerUser.addEventListener('click', e => {
   channel.push('register', {
@@ -159,6 +160,18 @@ channel.on('receive_retweets', (payload) => {
 channel.on('receive_response', payload => {
   console.log(payload);
   $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >${payload.message} </b>  ${payload.result}<br>`);
+});
+
+sendMessageButton.addEventListener('click' , e => {
+  channel.push('sendMessage', {
+    username: name.value,
+    messageReceiver: messageReceiver.value,
+    message: messageText.value
+  });
+});
+
+channel.on('receive_message', (payload) => {
+  console.log(payload)
 });
 
 channel.join()

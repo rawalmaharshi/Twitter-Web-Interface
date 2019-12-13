@@ -66,15 +66,15 @@
             <button type="button" class="btn btn-primary btn-lg btn-block buttons" id="sendTweetButton">Send Tweet</button>
           </div>
 
-          <h4 class="page-header" style="text-align:center;font-size: 18px !important">Re - Tweets</h4>
+          <h4 class="page-header" style="text-align:center;font-size: 18px !important">Send Direct Messages</h4>
           <div class="form-group">
-            <label for="retweetText">Re Tweet</label>
+            <label for="messageText">Message</label>
             <div class="input-group">
             <span class="input-group-addon"><i class="far fa-envelope"></i></span>
-            <input type="text" class="form-control" id="retweetText" placeholder="Enter the ReTweet">
-            <input type="text" class="form-control" id="reTweetUser" placeholder="Enter the User you want to ReTweet">
+            <input type="text" class="form-control" id="messageText" placeholder="Enter the Messsage">
+            <input type="text" class="form-control" id="messageReceiver" placeholder="Enter the User you want to Message">
             </div>
-            <button type="button" class="btn btn-primary btn-lg btn-block buttons" id="sendReTweetButton">Send Tweet</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block buttons" id="sendMessageButton">Send Message</button>
           </div>
         </form>
       </div>

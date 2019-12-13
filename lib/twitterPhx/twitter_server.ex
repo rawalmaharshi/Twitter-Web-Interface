@@ -88,6 +88,20 @@ defmodule TwitterPhx.TwitterServer do
         {:reply, get_tweets(name) ,state}
     end
 
+    def handle_call({:sendMessage, sender, receiver, message}, _from, state) do
+        {:reply, sendMessage(sender, receiver, message), state}
+    end
+
+    def sendMessage(sender, receiver, message) do
+        receiverSocket = getUserSocket(receiver)
+        map = %{}
+        map = Map.put(map, :sender, sender)
+        map = Map.put(map, :receiver, receiver)
+        map = Map.put(map, :message, message)
+        push receiverSocket, "receive_message", map
+        {:ok, "Message Sent!"}
+    end
+
     def logout(username, user_socket) do
         case :ets.lookup(:user, username) do
         [{u, p, s1, s2, t,  onlinestatus, user_socket, status}] ->

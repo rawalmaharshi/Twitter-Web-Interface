@@ -131,4 +131,12 @@ defmodule TwitterPhxWeb.ChannelFile do
       {:noreply, socket}
     end
 
+    def handle_in("sendMessage", payload, socket) do
+      message = Map.get(payload, "message")
+      receiver = Map.get(payload, "messageReceiver")
+      sender = Map.get(payload, "username")
+
+      GenServer.call(TwitterPhx.TwitterServer, {:sendMessage, sender, receiver, message})
+      {:noreply, socket}
+    end
   end
