@@ -200,13 +200,13 @@ defmodule TwitterPhx.TwitterServer do
 
     def subscribe_user( subscriber, subscribed_to) do
         case :ets.lookup(:user, subscriber) do
-            [{subscriber, password1 , subscribers_list , subscribed_list, tweets_list , onlinestatus, pid1}] ->
+            [{subscriber, password1 , subscribers_list , subscribed_list, tweets_list , onlinestatus, user_socket_subscriber, status_subscriber}] ->
                 if(onlinestatus == true) do
                     case :ets.lookup(:user, subscribed_to) do
-                        [{subscribed_to, password2 , subscribers_list2 , subscribed_list2, tweets_list2 , onlinestatus2, pid2}] ->
+                        [{subscribed_to, password2 , subscribers_list2 , subscribed_list2, tweets_list2 , onlinestatus2, user_socket_subscribe_to, status_subscribe_to}] ->
                             if !Enum.member?(subscribed_list, subscribed_to) do
-                                :ets.insert(:user, {subscriber,  password1 , subscribers_list ,[subscribed_to | subscribed_list], tweets_list , onlinestatus, pid1})
-                                :ets.insert(:user, {subscribed_to,  password2 ,[subscriber | subscribers_list2], subscribed_list2, tweets_list2 , onlinestatus2, pid2})
+                                :ets.insert(:user, {subscriber,  password1 , subscribers_list ,[subscribed_to | subscribed_list], tweets_list , onlinestatus, user_socket_subscriber, status_subscriber})
+                                :ets.insert(:user, {subscribed_to,  password2 ,[subscriber | subscribers_list2], subscribed_list2, tweets_list2 , onlinestatus2, user_socket_subscribe_to, status_subscribe_to})
                                 {:ok, "#{subscriber} have successfully subscribed to #{subscribed_to}"}
                             else
                                 {:error, "#{subscriber} already subscribed to #{subscribed_to}"}
