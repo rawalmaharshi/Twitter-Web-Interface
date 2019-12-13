@@ -1,7 +1,6 @@
 defmodule TwitterPhxWeb.ChannelFile do
     use Phoenix.Channel
     alias TwitterServerFrontEnd
-    :observer.start
   
     def join("twitter:interface", _payload, socket) do
       {:ok, socket}
