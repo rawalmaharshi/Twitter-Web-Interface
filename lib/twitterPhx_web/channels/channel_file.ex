@@ -58,7 +58,7 @@ defmodule TwitterPhxWeb.ChannelFile do
     def handle_in("deleteAccount", payload, socket) do
       IO.inspect username = Map.get(payload, "username")
       IO.inspect password = Map.get(payload, "password")
-      case GenServer.call(TwitterPhx.TwitterServer, {:delete_account, username, password}) do
+      case GenServer.call(TwitterPhx.TwitterServer, {:delete_account, username}) do
         {:ok, msg} ->
           IO.inspect msg
           {:reply, {:ok, msg}, socket}
