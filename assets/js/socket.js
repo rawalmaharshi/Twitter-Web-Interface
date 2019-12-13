@@ -12,6 +12,8 @@ let registerUser = document.getElementById("registerUser")
 let loginUser = document.getElementById("loginUser")
 let name = document.getElementById("userName")
 let password = document.getElementById("password")
+let sendTweets = document.getElementById("send_tweet_button")
+let tweets = document.getElementById("Tweet_Box")
 let subscribeUser = document.getElementById("subscribeToUser")
 let subscribeButton = document.getElementById("subscribeButton")
 let logoutButton = document.getElementById("logout")
@@ -44,8 +46,8 @@ loginUser.addEventListener('click', e => {
     username: name.value,
     password: password.value
   });
-  // name.value = ""
-  // password.value = ""
+  name.value = ""
+  password.value = ""
 });
 
 channel.on('login', (payload) => {
@@ -73,6 +75,27 @@ subscribeButton.addEventListener('click', e => {
   });
 });
 
+// logoutButton.addEventListener('click', e => {
+//   channel.push('logout', {
+//     username: name.value,
+//   });
+//   $("#homepage").css("display", "block")
+// });
+
+sendTweets.addEventListener('click', e => {
+  channel.push('send_tweet', {
+    username: name.value,
+    userTweet: tweets.value
+  });
+  tweets.value = "";
+});
+
+// deleteAccountButton.addEventListener('click', e => {
+//   channel.push('deleteAccount', {
+//     username: name.value,
+//     password: password.value
+//   });
+// });
 
 
 

@@ -24,8 +24,8 @@
 </div>
 
 <div>
-<input type='text' id='tweetbox'  placeholder='Write Tweet' />
- <input id='sendtweetbtn' type='button' value='Send Tweet'>
+<input type='text' id='Tweet_Box'  placeholder='Write Tweet' />
+ <input id='send_tweet_button' type='button' value='Send Tweet'>
 </div>
 
 

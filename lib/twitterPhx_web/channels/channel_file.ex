@@ -56,10 +56,52 @@ defmodule TwitterPhxWeb.ChannelFile do
       {:noreply, socket}
     end
 
+    def handle_in("deleteAccount", payload, socket) do
+      username = Map.get(payload, "username")
+      password = Map.get(payload, "password")
+      case GenServer.call(TwitterPhx.TwitterServer, {:delete_account, username, password,"client_pid"}) do
+        {:ok, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+      end      
+      {:noreply, socket}
+    end
+
     def handle_in("subscribe", payload, socket) do
       IO.inspect payload
       subscriber = Map.get(payload, "subscriber")
       subscribed_to = Map.get(payload, "subscribe_to")      
+      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
+        {:ok, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+      end      
+      {:noreply, socket}
+    end
+    
+    def handle_in("send_tweet", payload, socket) do
+      username = Map.get(payload, "username")
+      tweet = Map.get(payload, "userTweet")
+      case GenServer.call(TwitterPhx.TwitterServer, {:send_tweet, username, tweet}) do
+        {:ok, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+      end      
+      {:noreply, socket}
+    end
+
+    def handle_in("follow", payload, socket) do
+      subscriber = Map.get(payload, "following")
+      subscribed_to = Map.get(payload, "follower")      
       case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
         {:ok, msg} ->
           {:reply, {:ok, msg}, socket}
@@ -67,19 +109,7 @@ defmodule TwitterPhxWeb.ChannelFile do
           {:reply, {:error, msg}, socket}
       end
       {:noreply, socket}
-    end
-
-    def handle_in("send_tweet", payload, socket) do
-      username = Map.get(payload, "name")
-      tweet = Map.get(payload, "tweet")      
-      case IO.inspect GenServer.cast(TwitterPhx.TwitterServer, {:send_tweet, username, tweet}) do
-        {:ok, msg} ->
-          {:reply, {:ok, msg}, socket}
-        {:error, msg} ->
-          {:reply, {:error, msg}, socket}
-      end
-      {:noreply, socket}
-    end       
+    end 
 
     #not sure about this
     def handle_in("send_retweet", payload, socket) do
@@ -99,14 +129,6 @@ defmodule TwitterPhxWeb.ChannelFile do
       hashtag = Map.get(payload, "hashtag")      
       IO.inspect response =  GenServer.call(TwitterPhx.TwitterServer, {:search_hashtag, hashtag})
       msg = "Search result for hashtag #{hashtag} : #{response}"
-      push  socket, "receive_response", %{"message" => msg}
-      {:noreply, socket}
-    end  
-
-    def handle_in("search_username", payload, socket) do
-      username = Map.get(payload, "username")      
-      IO.inspect response =  GenServer.call(TwitterPhx.TwitterServer, {:search_user, username})
-      msg = "Search result for username #{username} : #{response}"
       push  socket, "receive_response", %{"message" => msg}
       {:noreply, socket}
     end  
