@@ -1,7 +1,6 @@
 defmodule TwitterPhx.TwitterServer do
     use GenServer
     use Phoenix.Channel
-    :observer.start
     @me __MODULE__
 
     def start_link() do
@@ -175,7 +174,7 @@ defmodule TwitterPhx.TwitterServer do
                     IO.puts ("Tweet sent by #{username}")
                     _message = {:ok, "Tweet sent!"}
                 else
-                    IO.puts "Please login first."
+                    # IO.puts "Please login first."
                     _message = {:error, "Please login first"}
                 end
             {:error, message} ->

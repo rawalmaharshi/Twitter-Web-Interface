@@ -1,7 +1,6 @@
 defmodule TwitterPhxWeb.ChannelFile do
     use Phoenix.Channel
     alias TwitterServerFrontEnd
-    :observer.start
   
     def join("twitter:interface", _payload, socket) do
       {:ok, socket}
@@ -98,18 +97,6 @@ defmodule TwitterPhxWeb.ChannelFile do
       end      
       {:noreply, socket}
     end
-
-    def handle_in("follow", payload, socket) do
-      subscriber = Map.get(payload, "following")
-      subscribed_to = Map.get(payload, "follower")      
-      case IO.inspect GenServer.call(TwitterPhx.TwitterServer, {:subscribe_user, subscriber, subscribed_to}) do
-        {:ok, msg} ->
-          {:reply, {:ok, msg}, socket}
-        {:error, msg} ->
-          {:reply, {:error, msg}, socket}
-      end
-      {:noreply, socket}
-    end 
 
     #not sure about this
     def handle_in("send_retweet", payload, socket) do
