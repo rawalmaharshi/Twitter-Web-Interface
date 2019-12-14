@@ -93,15 +93,18 @@ defmodule TwitterPhx.TwitterServer do
     end
 
     def sendMessage(sender, receiver, message) do
-        IO.inspect {_, receiverSocket} = getUserSocket(receiver)
-        if receiverSocket != :null do
-            map = %{}
-            map = Map.put(map, :sender, sender)
-            map = Map.put(map, :message, message)
-            push receiverSocket, "receive_message", map
-            {:ok, "Message Sent!"}
-        else
-            {:error, "!!user doesn't exist. we can't send your message!!"}
+        case getUserSocket(receiver) do
+            {:ok , socket} ->
+                if socket != :null do
+                    map = %{}
+                    map = Map.put(map, :sender, sender)
+                    map = Map.put(map, :message, message)
+                    push socket, "receive_message", map
+                    {:ok, "Message Sent!"}
+                else
+                    {:error, "!!user doesn't exist. we can't send your message!!"}
+                end
+            {:error, message} -> {:ok, message}
         end
     end
 
