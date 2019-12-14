@@ -123,22 +123,11 @@ defmodule TwitterPhx.TwitterServer do
     end
     
     def delete_account(username) do
-        case :ets.lookup(:user, username) do
-            [{username, _, _ , following_list, _ , onlinestatus, _, _}] -> 
-                if onlinestatus == true do
-                    Enum.each(following_list, fn(x) -> 
-                        unsubscribe_user(username, x)
-                    end)
-                    [{_ , _, followers_list2 , _, _, _, _, _}] = :ets.lookup(:user, username)
-                    Enum.each(followers_list2, fn(x) -> 
-                        unsubscribe_user(x, username)
-                    end)
-                    :ets.delete(:user, username)
-                    {:ok, "!!!!!!!!Account has been deleted successfully!!!!!!!. We will miss you"}
-                else
-                    {:error, "You are logged out. please login first"}
-                end                
-            [] -> {:error, "Invalid user. User is not registered"}
+        if :ets.lookup(:user, username) == [] do
+            {:error, "Invalid user. User is not registered"}
+        else
+            :ets.delete(:user, username)
+            {:ok, "!!!!!!!!Account has been deleted successfully!!!!!!!. We will miss you"}
         end
     end       
 
