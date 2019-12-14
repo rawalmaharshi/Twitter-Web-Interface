@@ -171,7 +171,8 @@ sendMessageButton.addEventListener('click' , e => {
 });
 
 channel.on('receive_message', (payload) => {
-  console.log(payload)
+  console.log(payload);
+  $('#userFeed').append(`<p style="margin: 0 0"><b style="color: #00ACEE": >${payload.sender} send a message : </b>  ${payload.message}<br>`);
 });
 
 channel.join()

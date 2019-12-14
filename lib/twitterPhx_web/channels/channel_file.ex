@@ -135,8 +135,15 @@ defmodule TwitterPhxWeb.ChannelFile do
       message = Map.get(payload, "message")
       receiver = Map.get(payload, "messageReceiver")
       sender = Map.get(payload, "username")
-
-      GenServer.call(TwitterPhx.TwitterServer, {:sendMessage, sender, receiver, message})
+      
+      case GenServer.call(TwitterPhx.TwitterServer, {:sendMessage, sender, receiver, message}) do
+        {:ok, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+        {:error, msg} ->
+          IO.inspect msg
+          {:reply, {:ok, msg}, socket}
+      end 
       {:noreply, socket}
     end
   end
