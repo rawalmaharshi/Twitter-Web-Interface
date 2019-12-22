@@ -3,7 +3,7 @@ defmodule TwitterPhxWeb.Endpoint do
   alias TwitterPhx.TwitterServer
 
   socket "/socket", TwitterPhxWeb.UserSocket,
-    websocket: true,
+    websocket: [timeout: 45_000],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
