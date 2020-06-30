@@ -1,3 +1,9 @@
+<style>
+  .formView {
+    width: 100%;
+  }
+</style>
+
 <div class="container" id = "loginRegisterDiv">
 	<div class="row">
 		<div class="col-md-4"></div>
@@ -42,7 +48,7 @@
 
 <div class="container" id="userHome">
 	<div class="row">
-		<div class="col-md-6" style="width: 50%">
+		<div class="col-md-6 formView">
       <div class="col-md-4 col-sm-12 forms">
         <form novalidate>
 
@@ -80,7 +86,7 @@
       </div>
     </div>
 		
-		<div class="col-md-6" style="width: 50%">
+		<div class="col-md-6 formView">
       <div class="col-md-4 col-sm-12 forms">
         <form novalidate>
 
